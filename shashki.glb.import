@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://cr047aw1nwjdh"
-path="res://.godot/imported/shashki.glb-7d33bcb130d6b72bba59e63dfc120407.scn"
+uid="uid://32ats2g1k5c5"
+path="res://.godot/imported/shashki.glb-b15235b04ab209c50a32628b260ed992.scn"
 
 [deps]
 
-source_file="res://Scenes/shashki.glb"
-dest_files=["res://.godot/imported/shashki.glb-7d33bcb130d6b72bba59e63dfc120407.scn"]
+source_file="res://shashki.glb"
+dest_files=["res://.godot/imported/shashki.glb-b15235b04ab209c50a32628b260ed992.scn"]
 
 [params]
 

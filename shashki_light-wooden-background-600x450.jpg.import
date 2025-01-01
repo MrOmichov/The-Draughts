@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://diba3iul3ppvm"
-path.s3tc="res://.godot/imported/shashki_light-wooden-background-600x450.jpg-e032e322f85bae0dd6bb1c6f277b395e.s3tc.ctex"
+uid="uid://du6e41vjqypm7"
+path.s3tc="res://.godot/imported/shashki_light-wooden-background-600x450.jpg-00304b336bfee82bec96a742508f5273.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "82c572434278353682485416766b4fe1"
-}
 
 [deps]
 
-source_file="res://Scenes/shashki_light-wooden-background-600x450.jpg"
-dest_files=["res://.godot/imported/shashki_light-wooden-background-600x450.jpg-e032e322f85bae0dd6bb1c6f277b395e.s3tc.ctex"]
+source_file="res://shashki_light-wooden-background-600x450.jpg"
+dest_files=["res://.godot/imported/shashki_light-wooden-background-600x450.jpg-00304b336bfee82bec96a742508f5273.s3tc.ctex"]
 
 [params]
 
