@@ -1,6 +1,6 @@
 extends MeshInstance3D
 
-var pos = []
+var pos = [] # X, Y
 var is_black: bool
 signal draught_is_clicked(y, x, is_black, draught)
 
@@ -22,6 +22,11 @@ func getX():
 func getY():
 	return pos.back()
 
+func setX(x):
+	pos[0] = x
+	
+func setY(y):
+	pos[1] = y
 
 func _on_area_3d_mouse_entered() -> void:
 	pass
