@@ -84,6 +84,10 @@ func cells_init():
 		cell.pos.append(dict[cell.name.left(1)]) # X
 		cell.pos.append(int(cell.name.right(1)) - 1) # Y
 
+func print_board():
+	for i in board.slice(-1, -board.size() - 1, -1):
+			print(i)
+
 func board_update():
 	for i in board:
 		for j in range(i.size()):
@@ -169,8 +173,7 @@ func _on_cell_input_event(y, x, position_x, position_z) -> void:
 		turn = 1 if turn == 2 else 2
 		the_chosen_one = null
 		board_update()
-		for i in board.slice(-1, -board.size() - 1, -1):
-			print(i)
+		print_board()
 	board_clear_3()
 
 func set_moves(moves):
