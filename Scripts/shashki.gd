@@ -7,6 +7,7 @@ var turn = 1
 var the_chosen_one
 var whites = []
 var blacks = []
+var to_delete: Array
 var board: Array = [
 	[0, 0, 0, 0, 0, 0, 0, 0],
 	[0, 0, 0, 0, 0, 0, 0, 0],
@@ -127,6 +128,25 @@ func board_connect():
 	for cell in cells:
 		cell.cell_is_clicked.connect(_on_cell_input_event)
 
+func get_takes(y, x, is_black) -> Array:
+	var enemies = [2, 22] if not is_black else [1, 11]
+	var takes = []
+	
+	# TODO Обработать выход за границы доски
+	if x < 6:
+		if y < 6 and (board[y + 1][x + 1] in enemies) and board[y + 2][x + 2] == 0:
+			takes.append([y + 2, x + 2])
+		if y > 1 and (board[y - 1][x + 1] in enemies) and board[y - 2][x + 2] == 0:
+			takes.append([y - 2, x + 2])
+	if x > 1:
+		if y < 6 and (board[y + 1][x - 1] in enemies) and board[y + 2][x - 2] == 0:
+			takes.append([y + 2, x - 2])
+		if y > 1 and (board[y - 1][x - 1] in enemies) and board[y - 2][x - 2] == 0:
+			takes.append([y - 2, x - 2])
+	if takes.is_empty():
+		return[[-1, -1]]
+	return takes
+
 func get_moves(y, x, is_black) -> Array:
 	var d = -1 if is_black else 1
 	var moves = []
@@ -153,21 +173,53 @@ func _process(delta: float) -> void:
 func _on_draught_input_event(y, x, is_black, draught) -> void:
 	print('Coords of the clicked draught are (Y: ', y, ' X: ', x, ')')
 	var move_possibility: bool
+	var take_possibility: bool
+	
 	var moves = get_moves(y, x, is_black)
+	var takes = get_takes(y, x, is_black)
 	move_possibility = false if moves[0][0] == -1 else true
+	take_possibility = false if takes[0][0] == -1 else true
+	
 	print('This draught move possibility is ', move_possibility)
+	print('This draught take possibility is ', take_possibility)
 	
 	# TODO turn control on screen
-	var turn_colour = true if ((turn == 1 and !is_black) or (turn == 2 and is_black)) else false
-	if turn_colour and move_possibility:
-		board_clear_3()
-		set_moves(moves)
-		the_chosen_one = draught
+	var is_this_colour_turn = true if ((turn == 1 and !is_black) or (turn == 2 and is_black)) else false
+	# TODO anyTake - проверять есть ли шашка, способная бить
+	if is_this_colour_turn:
+		if take_possibility:
+			board_clear_3()
+			set_moves(takes)
+			the_chosen_one = draught
+		elif move_possibility:
+			board_clear_3()
+			set_moves(moves)
+			the_chosen_one = draught
 
-func _on_cell_input_event(y, x, position_x, position_z) -> void:
+func _on_cell_input_event(new_y, new_x, position_x, position_z) -> void:
 	if the_chosen_one != null:
-		the_chosen_one.setX(x)
-		the_chosen_one.setY(y)
+		var is_take = true if abs(new_x - the_chosen_one.getX()) == 2 else false
+		var x_to_delete
+		var y_to_delete
+		
+		# TODO удаление взятой шашки
+		if is_take:
+			var draughts: Array = whites if the_chosen_one.is_black else blacks
+			var d = -1 if new_x - the_chosen_one.getX() > 0 else 1
+			x_to_delete = the_chosen_one.getX() + (new_x - the_chosen_one.getX() + d)
+			d = -1 if new_x - the_chosen_one.getY() > 0 else 1
+			y_to_delete = the_chosen_one.getY() + (new_y - the_chosen_one.getY() + d)
+			for draught in draughts:
+				if draught.pos == [x_to_delete, y_to_delete]:
+					print(x_to_delete, y_to_delete, the_chosen_one.getX(), the_chosen_one.getY())
+					draughts.remove_at(draughts.find(draught))
+					draught.queue_free()
+					draught.free()
+					break
+				# to_delete.append(draught)
+
+		the_chosen_one.setX(new_x)
+		the_chosen_one.setY(new_y)
 		the_chosen_one.position.x = position_x
 		the_chosen_one.position.z = position_z
 		turn = 1 if turn == 2 else 2
