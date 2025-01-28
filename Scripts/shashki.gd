@@ -207,7 +207,7 @@ func _on_cell_input_event(new_y, new_x, position_x, position_z) -> void:
 			var draughts: Array = whites if the_chosen_one.is_black else blacks
 			var d = -1 if new_x - the_chosen_one.getX() > 0 else 1
 			x_to_delete = the_chosen_one.getX() + (new_x - the_chosen_one.getX() + d)
-			d = -1 if new_x - the_chosen_one.getY() > 0 else 1
+			d = -1 if new_y - the_chosen_one.getY() > 0 else 1
 			y_to_delete = the_chosen_one.getY() + (new_y - the_chosen_one.getY() + d)
 			for draught in draughts:
 				if draught.pos == [x_to_delete, y_to_delete]:
