@@ -3130,7 +3130,7 @@ transform = Transform3D(1, 0, 0, 0, 0.333807, 0.942641, 0, -0.942641, 0.333807, 
 [connection signal="input_event" from="F6/Area3D" to="F6" method="_on_area_3d_input_event"]
 [connection signal="mouse_entered" from="F6/Area3D" to="F6" method="_on_area_3d_mouse_entered"]
 [connection signal="mouse_exited" from="F6/Area3D" to="F6" method="_on_area_3d_mouse_exited"]
-[connection signal="input_event" from="D6/Area3D" to="." method="_on_area_3d_input_event"]
+[connection signal="input_event" from="D6/Area3D" to="D6" method="_on_area_3d_input_event"]
 [connection signal="mouse_entered" from="D6/Area3D" to="D6" method="_on_area_3d_mouse_entered"]
 [connection signal="mouse_exited" from="D6/Area3D" to="D6" method="_on_area_3d_mouse_exited"]
 [connection signal="input_event" from="B6/Area3D" to="B6" method="_on_area_3d_input_event"]

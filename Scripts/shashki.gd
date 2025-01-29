@@ -128,6 +128,13 @@ func board_connect():
 	for cell in cells:
 		cell.cell_is_clicked.connect(_on_cell_input_event)
 
+func any_take() -> bool:
+	var draughts = whites if turn == 1 else blacks
+	for draught in draughts:
+		if get_takes(draught.getY(), draught.getX(), draught.is_black)[0][0] != -1:
+			return true
+	return false
+
 func get_takes(y, x, is_black) -> Array:
 	var enemies = [2, 22] if not is_black else [1, 11]
 	var takes = []
@@ -185,13 +192,13 @@ func _on_draught_input_event(y, x, is_black, draught) -> void:
 	
 	# TODO turn control on screen
 	var is_this_colour_turn = true if ((turn == 1 and !is_black) or (turn == 2 and is_black)) else false
-	# TODO anyTake - проверять есть ли шашка, способная бить
+
 	if is_this_colour_turn:
 		if take_possibility:
 			board_clear_3()
 			set_moves(takes)
 			the_chosen_one = draught
-		elif move_possibility:
+		elif !any_take() and move_possibility:
 			board_clear_3()
 			set_moves(moves)
 			the_chosen_one = draught
@@ -211,7 +218,7 @@ func _on_cell_input_event(new_y, new_x, position_x, position_z) -> void:
 			y_to_delete = the_chosen_one.getY() + (new_y - the_chosen_one.getY() + d)
 			for draught in draughts:
 				if draught.pos == [x_to_delete, y_to_delete]:
-					print(x_to_delete, y_to_delete, the_chosen_one.getX(), the_chosen_one.getY())
+					# print(x_to_delete, y_to_delete, the_chosen_one.getX(), the_chosen_one.getY())
 					draughts.remove_at(draughts.find(draught))
 					draught.queue_free()
 					draught.free()
