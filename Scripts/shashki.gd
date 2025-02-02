@@ -5,6 +5,7 @@ var black_draught_res = preload('res://Scenes/black_draught.tscn')
 
 var turn = 1
 var the_chosen_one
+var is_taking: bool = false
 var whites = []
 var blacks = []
 var to_delete: Array
@@ -18,6 +19,7 @@ var board: Array = [
 	[0, 0, 0, 0, 0, 0, 0, 0],
 	[0, 0, 0, 0, 0, 0, 0, 0],
 ]
+
 
 func draughts_info(draughts: Array):
 	for draught in draughts:
@@ -209,28 +211,34 @@ func _on_cell_input_event(new_y, new_x, position_x, position_z) -> void:
 		var x_to_delete
 		var y_to_delete
 		
-		# TODO удаление взятой шашки
-		if is_take:
-			var draughts: Array = whites if the_chosen_one.is_black else blacks
-			var d = -1 if new_x - the_chosen_one.getX() > 0 else 1
-			x_to_delete = the_chosen_one.getX() + (new_x - the_chosen_one.getX() + d)
-			d = -1 if new_y - the_chosen_one.getY() > 0 else 1
-			y_to_delete = the_chosen_one.getY() + (new_y - the_chosen_one.getY() + d)
-			for draught in draughts:
-				if draught.pos == [x_to_delete, y_to_delete]:
-					# print(x_to_delete, y_to_delete, the_chosen_one.getX(), the_chosen_one.getY())
-					draughts.remove_at(draughts.find(draught))
-					draught.queue_free()
-					draught.free()
-					break
-				# to_delete.append(draught)
-
 		the_chosen_one.setX(new_x)
 		the_chosen_one.setY(new_y)
 		the_chosen_one.position.x = position_x
 		the_chosen_one.position.z = position_z
-		turn = 1 if turn == 2 else 2
-		the_chosen_one = null
+		
+		if is_take:
+			is_taking = true
+			var d = -1 if new_x - the_chosen_one.getX() > 0 else 1
+			x_to_delete = the_chosen_one.getX() + (new_x - the_chosen_one.getX() + d)
+			d = -1 if new_y - the_chosen_one.getY() > 0 else 1
+			y_to_delete = the_chosen_one.getY() + (new_y - the_chosen_one.getY() + d)
+			board[y_to_delete][x_to_delete] = 10
+			to_delete.append([y_to_delete, x_to_delete])
+			
+			if get_takes(the_chosen_one.getY(), the_chosen_one.getX(), the_chosen_one.is_black)[0][0] == -1:
+				var draughts: Array = whites if the_chosen_one.is_black else blacks
+				is_taking = false
+				for draught in draughts:
+					if draught.pos in to_delete:
+						# print(x_to_delete, y_to_delete, the_chosen_one.getX(), the_chosen_one.getY())
+						draughts.remove_at(draughts.find(draught))
+						draught.queue_free()
+						draught.free()
+						break
+				to_delete.clear()
+				turn = 1 if turn == 2 else 2
+				the_chosen_one = null
+
 		board_update()
 		print_board()
 	board_clear_3()
